@@ -5,10 +5,21 @@ import { useState } from 'react'
 const App = () => {
   const [selected, setSelected] = useState(0)
 
+  const [votes, setVotes] = useState(Array(8).fill(0)); //Inits an array of eight 0's [0, 0, 0 jne..]
+
   const getRandomAnecdote = () => {
-    let randomNumber = Math.floor(Math.random() * 8)
+    let randomNumber = Math.floor(Math.random() * anecdotes.length)
     setSelected(randomNumber)
   }
+
+  const handleVote = () => {
+    const newVotes = [...votes]; //Creates copy of votes array, for rendering purposes
+    newVotes[selected] += 1; //Increments the vote for currently [selected] anecdote. 
+    setVotes(newVotes); //Sets the new number of votes for the anecdote
+  }
+
+  // The (...)spread operator ensures that you're working with a new copy of the array, maintaining the immutability of the state.
+  //Immutability helps React efficiently detect changes, ensuring that your components re-render correctly when the state changes.
 
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -20,13 +31,18 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when dianosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+  
   console.log(selected)
+
+
+  console.log(votes)
 
   return (
     <>
         <p>{anecdotes[selected]}</p>
+        <p>votes: {votes[selected]}</p>
         <button onClick={getRandomAnecdote}>next anecdote</button>
+        <button onClick={handleVote}>give vote</button>
     </>
 
   )
